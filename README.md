@@ -13,7 +13,7 @@ Built for brand strategists, creative directors, and anyone preparing competitiv
 - **Discover** — Find agency relationships, campaign case studies, and press coverage via web search
 - **Capture** — Screenshot websites, social grids, and app stores with Playwright
 - **Extract** — Pull actual images from Instagram API, YouTube, Prismic CMS, and agency portfolios
-- **Analyze** — Run vision analysis on captured imagery (Gemini or Claude) to extract colors, typography, and composition
+- **Analyze** — Run vision analysis on captured imagery (Gemini or Claude) to extract colors and composition
 - **Package** — Generate a structured markdown document and a branded HTML report covering 13 sections of competitive analysis
 
 ## Quick start
@@ -31,19 +31,20 @@ cp -r visual-research ~/.claude/skills/visual-research
 #    "analyze Nike's brand identity"
 ```
 
-## The 13 sections
+## Report sections
 
-Every report covers:
+The HTML report includes a hero with TL;DR executive summary, then 12 sections:
 
 ```
-01  Quick Facts          07  Assessment
-02  Positioning          08  Strategic Verdict
-03  Brand Evolution      09  Brand Personality
-04  Color Palette        10  vs [Client]
-05  Typography           11  Social Strategy
-06  Layout & UX          12  Content & Campaign
-                         13  Audience & Community
+§01  Quick Facts           §07  Assessment
+§02  Positioning           §08  Strategic Verdict
+§03  Brand Identity        §09  Brand Personality
+§04  Brand Evolution       §10  Social Strategy
+§05  Brand in Practice     §11  Campaigns
+§06  Digital Experience    §12  vs [Client]
 ```
+
+Plus a full-width "Signal" dark break between §03 and §04 highlighting the single most important strategic insight.
 
 ## Pipeline
 
@@ -72,7 +73,7 @@ See [examples/sample-report.html](examples/sample-report.html) for a full Cash A
 
 ## Customization
 
-The report template uses CSS variables. Change the branding by editing the `:root` block:
+The report template uses CSS variables. Change the branding by editing the `:root` block in `templates/report.html`:
 
 ```css
 :root {
@@ -82,10 +83,14 @@ The report template uses CSS variables. Change the branding by editing the `:roo
   --light: #999;
   --border: #eee;
   --bg: #fff;
-  --brand-name: 'Your Agency';
-  --brand-url: 'https://your-site.com';
+  --max-w: 1100px;       /* Content max width */
+  --font-display: 'larken', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 ```
+
+The CE logo is base64-embedded in the template. Replace the `<img>` src in the `.ce-bar` to use your own logo.
 
 ## Trigger phrases
 
@@ -117,9 +122,11 @@ The skill works without any of these — it falls back to web search and Claude'
 visual-research/
   SKILL.md                              # The skill (Claude reads this)
   templates/
-    report.html                         # HTML report template
+    report.html                         # HTML report template (full-width, pill nav)
+    assets/
+      ce-logo-red.png                   # CE logo source (embedded as base64 in template)
   references/
-    brand-audit-framework.md            # 13-section research template
+    brand-audit-framework.md            # 13-section research template + HTML mapping
     source-discovery-guide.md           # Where to find brand assets
     image-extraction-techniques.md      # Instagram API, Prismic, yt-dlp recipes
     ce-styleguide.md                    # Curious Endeavor design rules

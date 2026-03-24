@@ -15,6 +15,17 @@ Apply these rules strictly when generating the HTML report.
   --light: #999;
   --border: #eee;
   --bg: #fff;
+  --max-w: 1100px;
+  --font-display: 'larken', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --size-display: 48px;
+  --size-h1: 28px;
+  --size-h2: 20px;
+  --size-body: 14px;
+  --size-small: 12px;
+  --size-label: 10px;
+  --size-data: 40px;
 }
 ```
 
@@ -71,12 +82,46 @@ Apply these rules strictly when generating the HTML report.
 - Hover: border darkens to #999
 - No rounded corners, no shadows
 
-### Navigation
-- Logo: Larken in #CC0000
-- Links: Inter 13px, color #666
-- Gap: 28px between links
-- Padding: 20px vertical
-- Backdrop: rgba(255,255,255, 0.96) with blur
+### Navigation (Pill Track)
+- Sticky bar at top with CE logo image (140px wide)
+- Horizontal pill-track navigation below hero, center-aligned
+- Pills: 12px, weight 500, color #999, padding 6px 12px
+- Active pill: white text on black background
+- Scrollspy-driven — pills auto-highlight as user scrolls
+- Pill track scrolls horizontally on narrow screens
+
+### Hero Block
+- Full-width, 480px height, black background
+- Image with `object-fit: cover`
+- Gradient overlay: transparent → rgba(0,0,0,0.85) bottom
+- Title: Larken 48px white, section label in red above
+- Metadata row: 12px, rgba(255,255,255,0.4)
+
+### Dark Break (Signal)
+- Full-width black background, 48px vertical padding
+- Section label in red, headline in Larken white
+- Body text rgba(255,255,255,0.6)
+- Callout has rgba(255,255,255,0.05) background
+
+### Accordion Sections
+- 1px border, 16px/20px padding on header
+- Hover: #fafafa background
+- Toggle icon: `+` that rotates 45° when open
+- Body hidden by default, shown when `.open` class added
+
+### Campaign Cards
+- Hero image: full-width, 420px height, `object-fit: cover`
+- Meta row: label size, uppercase, light color, flex with 24px gap
+- Title: Larken 20px
+- Supporting images: 3-column grid, 16:9 aspect ratio, 2px gap
+
+### Facts Grid
+- 4-column grid, 1px gap with border background
+- Cell: 20px padding, mono value at 20px, label at 10px uppercase
+
+### Platform Grid
+- 5-column grid, 1px gap with border background
+- Cell: 20px padding, centered, icon/value/detail stack
 
 ## Logo
 
@@ -98,8 +143,7 @@ Apply these rules strictly when generating the HTML report.
 ## Don't
 
 - Overuse the red accent
-- Add gradients
-- Add shadows or 3D effects
+- Add gradients (exception: hero overlay gradient is structural, not decorative)
 - Use heavy body text weights
 - Crowd elements together
 - Use stock photography

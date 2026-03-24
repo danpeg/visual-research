@@ -1,6 +1,6 @@
 # Brand Audit Framework
 
-The 13-section visual research document template. Each section maps to a corresponding section in the HTML report.
+The 13-section visual research document template. This is the intermediate markdown format — sections map to the HTML report in a different order (see mapping below).
 
 ## Document Structure
 
@@ -16,7 +16,6 @@ The 13-section visual research document template. Each section maps to a corresp
 - LinkedIn: [page]
 - Primary Agency: [name]
 - Recent Campaigns: [list]
-- Client: [your client name for comparison]
 ```
 
 ## Sections
@@ -38,14 +37,6 @@ Hex values extracted from:
 
 Document primary, secondary, and accent colors. Note usage patterns (e.g., "Green only appears on CTAs, never as background fill").
 
-### 05 — Typography
-Font families identified from:
-- CSS `font-family` declarations on the website
-- Vision analysis of marketing materials
-- App store screenshots
-
-Document: typeface names, weights used, where each is applied (headlines vs. body vs. UI), letter-spacing and line-height patterns.
-
 ### 06 — Layout & UX
 - Information density (low/medium/high)
 - Navigation patterns (tab bar, hamburger, sidebar)
@@ -64,30 +55,11 @@ Strengths and weaknesses rated on a relative scale. Categories:
 - International Presence
 - Demographic Breadth
 
-### 08 — Strategic Verdict
-For each brand element, classify as:
-- **Borrow** — Element worth adapting for the client
-- **Reject** — Element that wouldn't work for the client (explain why)
-- **Watch** — Element to monitor for future competitive overlap
-
-Include rationale for each classification.
-
 ### 09 — Brand Personality
 - Archetype (Rebel, Creator, Sage, etc.)
 - Voice characteristics (3-5 adjectives with examples)
 - Audience signal (what using this brand says about the user)
 - Tone samples (2-3 actual copy examples from the brand)
-
-### 10 — vs [Client]
-Head-to-head comparison table:
-- Primary Color
-- Typography
-- Tone of Voice
-- Target Demographic
-- Brand Personality
-- Visual Density
-- Cultural Strategy
-- Social Platform Strength
 
 ### 11 — Social Strategy
 Platform-by-platform breakdown:
@@ -115,17 +87,36 @@ Hero campaigns with:
 - Community management style
 - Key community touchpoints (subreddits, Discord, forums)
 
+## HTML Report Mapping
+
+During Phase 5 (Package), the 13 markdown sections map to the HTML report as follows. The HTML report also adds synthesized sections (TL;DR, Signal) not present in the research doc.
+
+| HTML report section | Source from research doc |
+|---|---|
+| Hero + TL;DR | Synthesized from all sections |
+| §01 Quick Facts | Section 01 |
+| §02 Positioning | Section 02 |
+| §03 Brand Identity | Section 04 (Color) + Logo |
+| Dark Break / Signal | Synthesized — single most important insight |
+| §04 Brand Evolution | Section 03 |
+| §05 Brand in Practice | Curated images from captures |
+| §06 Digital Experience | Section 06 |
+| §07 Assessment | Section 07 |
+| §09 Brand Personality | Section 09 + Section 13 audience data |
+| §10 Social Strategy | Section 11 + Section 13 community data |
+| §11 Campaigns | Section 12 |
+
 ## Image Inventory
 
 Append to the research doc:
 
 ```markdown
 ## Image Inventory
-| # | Source | File | Use |
-|---|--------|------|-----|
-| 1 | Agency (Name) | agency-01.jpg | Hero image |
-| 2 | Instagram API | ig-post-01.jpg | Social section |
-| 3 | Playwright | website-homepage.png | Positioning section |
+| # | Source | File | Slot | Use |
+|---|--------|------|------|-----|
+| 1 | Agency (Name) | agency-01.jpg | 0 | Hero image |
+| 2 | Instagram API | ig-post-01.jpg | 3 | Brand in Practice grid |
+| 3 | Playwright | website-homepage.png | 9 | Digital Experience |
 ```
 
-Map each image to the report section where it will appear.
+Map each image to its `data-slot` position in the HTML report template (slots 0-17).
