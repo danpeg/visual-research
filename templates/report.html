@@ -243,46 +243,6 @@
     font-weight: 400;
   }
 
-  /* Capabilities banner */
-  .capabilities {
-    padding: 16px 80px;
-    background: var(--bg-alt);
-    border-bottom: 1px solid var(--border);
-    font-size: 11px;
-    color: var(--light);
-    display: flex;
-    gap: 28px;
-    align-items: center;
-  }
-
-  .capabilities .cap-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--red);
-  }
-
-  .cap-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--grey);
-  }
-
-  .cap-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--black);
-  }
-
-  .cap-dot.warn { background: var(--light); }
-  .cap-dot.off { background: var(--border); }
-
   /* ═══════════════════════════════════════════════════════════════
      SECTIONS
      ═══════════════════════════════════════════════════════════════ */
@@ -379,33 +339,8 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════
-     IMAGE PLACEHOLDERS
+     IMAGE GRIDS
      ═══════════════════════════════════════════════════════════════ */
-  .image-placeholder {
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 8px;
-    color: var(--light);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: border-color 0.2s;
-  }
-
-  .image-placeholder:hover {
-    border-color: var(--light);
-  }
-
-  .image-placeholder .ph-icon {
-    font-size: 20px;
-    opacity: 0.25;
-  }
-
   .image-grid {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
@@ -838,7 +773,7 @@
     .image-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
     .image-grid .img-hero { grid-row: auto; }
     .campaign-card { grid-template-columns: 1fr; }
-    .capabilities { padding: 16px 24px; flex-wrap: wrap; }
+
     .scroll-progress { left: 0; }
     .header-meta { flex-wrap: wrap; gap: 24px; }
     .report-footer { padding: 48px 24px; }
@@ -907,17 +842,6 @@
       </div>
     </header>
 
-    <!-- Capabilities banner: list research tools used and their status.
-         Use cap-dot (active), cap-dot warn (partial), or cap-dot off (unavailable). -->
-    <div class="capabilities">
-      <span class="cap-label">Setup</span>
-      <div class="cap-item"><div class="cap-dot {{CAP_GEMINI}}"></div> Gemini Vision</div>
-      <div class="cap-item"><div class="cap-dot {{CAP_PLAYWRIGHT}}"></div> Playwright</div>
-      <div class="cap-item"><div class="cap-dot {{CAP_INSTAGRAM}}"></div> Instagram API</div>
-      <div class="cap-item"><div class="cap-dot {{CAP_YTDLP}}"></div> yt-dlp</div>
-      <div class="cap-item"><div class="cap-dot {{CAP_SCRAPLING}}"></div> Scrapling</div>
-    </div>
-
     <!-- ═══════════════════════════════════════════════════════════════
          SECTION 01 — Quick Facts
          Key metrics and numbers about the brand. Uses a data-grid with
@@ -969,16 +893,7 @@
       <div class="section-num">02 &mdash; Positioning</div>
       <h2 class="larken">Market Position</h2>
       {{SECTION_02_CONTENT}}
-      <div class="image-grid">
-        <div class="image-placeholder img-hero" style="min-height: 280px;">
-          <span class="ph-icon">&#9634;</span>
-          <span>Homepage Screenshot</span>
-        </div>
-        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>App Store Hero</span></div>
-        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Product Screenshot 1</span></div>
-        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Product Screenshot 2</span></div>
-        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Product Screenshot 3</span></div>
-      </div>
+      {{GRID_POSITIONING}}
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════
@@ -1046,11 +961,7 @@
       <div class="section-num">06 &mdash; Layout & UX</div>
       <h2 class="larken">Layout & UX Patterns</h2>
       {{SECTION_06_CONTENT}}
-      <div class="image-grid" style="grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 280px;">
-        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Screen Capture 1</span></div>
-        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Screen Capture 2</span></div>
-        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Screen Capture 3</span></div>
-      </div>
+      {{GRID_LAYOUT_UX}}
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════
@@ -1122,10 +1033,7 @@
       <div class="section-num">11 &mdash; Social Strategy</div>
       <h2 class="larken">Social Presence</h2>
       {{SECTION_11_CONTENT}}
-      <div class="image-grid" style="grid-template-columns: 1fr 1fr; grid-template-rows: 220px;">
-        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Social Profile Capture 1</span></div>
-        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Social Profile Capture 2</span></div>
-      </div>
+      {{GRID_SOCIAL}}
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════
@@ -1149,11 +1057,7 @@
       <div class="section-num">13 &mdash; Audience & Community</div>
       <h2 class="larken">Audience & Community</h2>
       {{SECTION_13_CONTENT}}
-      <div class="image-grid" style="grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 200px;">
-        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>UGC Sample 1</span></div>
-        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>UGC Sample 2</span></div>
-        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Community Sentiment</span></div>
-      </div>
+      {{GRID_AUDIENCE}}
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════

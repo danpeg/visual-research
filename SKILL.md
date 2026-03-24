@@ -147,12 +147,61 @@ Read `templates/report.html` for the page structure.
 
 Populate the template with research findings:
 1. Fill each of the 13 sections with content from the research doc
-2. Embed key images (base64 for portability, or relative paths)
-3. Render color swatches with actual extracted hex values
-4. Populate the capabilities banner with the setup report
-5. Update the header with brand name, agency, sector, and threat level
-6. Save as `[brand]-visual-research.html`
-7. Open in the user's browser
+2. Render color swatches with actual extracted hex values
+3. Update the header with brand name, agency, sector, and threat level
+4. Embed images into the grid slots (see procedure below)
+5. Save as `[brand]-visual-research.html`
+6. Open in the user's browser
+
+**Image embedding procedure:**
+
+The template has 4 grid variables that must be replaced with complete `<div class="image-grid">` blocks containing embedded images, or removed entirely if no images are available for that section.
+
+| Grid variable | Section | Image sources | Grid style |
+|---|---|---|---|
+| `{{GRID_POSITIONING}}` | 02 — Positioning | Homepage screenshot (hero), app store, best 3 product/agency images | `grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 280px 200px` — first image spans both rows as hero |
+| `{{GRID_LAYOUT_UX}}` | 06 — Layout & UX | App/website screen captures | `grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 280px` |
+| `{{GRID_SOCIAL}}` | 11 — Social Strategy | Instagram grid, TikTok/YouTube captures | `grid-template-columns: 1fr 1fr; grid-template-rows: 220px` |
+| `{{GRID_AUDIENCE}}` | 13 — Audience | Best Instagram posts (UGC), community visuals | `grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 200px` |
+
+For each grid that has images:
+
+1. Convert each image to base64: `base64 -w 0 captures/website-homepage.png` (use `-b 0` on macOS)
+2. Build the grid HTML with `<img>` tags:
+```html
+<div class="image-grid" style="grid-template-columns: ...">
+  <img src="data:image/png;base64,{BASE64}" alt="Homepage" style="width:100%;height:100%;object-fit:cover;" class="img-hero">
+  <img src="data:image/png;base64,{BASE64}" alt="Product 1" style="width:100%;height:100%;object-fit:cover;">
+</div>
+```
+3. Replace the grid variable with the built HTML
+
+For any grid where NO images were captured, replace the variable with an empty string.
+
+The `{{APPENDIX_IMAGE_INVENTORY}}` table should list all embedded images with their source URL, filename, and which section they appear in.
+
+## OpenClaw Deployment
+
+This skill was designed for Claude Code running locally (no hard timeout). When running via OpenClaw sub-agents, the full pipeline will likely exceed the default 10-minute timeout — phases 1-4 alone (web research, screenshots, image extraction, vision analysis) take ~8-10 minutes, leaving no time for report assembly.
+
+**Option A — Single agent, longer timeout (simplest)**
+
+Set `timeout: 1200000` (20 min) on the sub-agent task. This gives enough headroom for the full pipeline in one shot.
+
+**Option B — Two-agent split (recommended for reliability)**
+
+Split the work across two sequential sub-agents:
+
+| Agent | Phases | What it does | Expected time |
+|-------|--------|-------------|---------------|
+| **Gather** | 1-4 (Discover → Analyze) | Web research, screenshots, image downloads, vision analysis. Writes all raw data to `[brand]-raw-data.md` and organized image directories. | ~8-10 min |
+| **Package** | 5 (Package) | Reads the raw data + images, assembles the 13-section research doc and branded HTML report. Can also fill gaps with quick web searches for business facts. | ~4-6 min |
+
+The gather agent should save its output to a known location so the package agent can pick it up. Use the workspace directory for handoff.
+
+**Option C — Parallel gather + sequential package**
+
+For maximum speed, split Phase 1 (Discover) and Phases 2-3 (Capture + Extract) across parallel agents, then run Phase 4-5 sequentially once images are collected. Only worth the complexity for time-sensitive briefs.
 
 ## Quality Checklist
 
