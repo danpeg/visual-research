@@ -1,0 +1,6 @@
+.claude/settings.local.json
+.DS_Store
+node_modules/
+work/
+captures/
+*.tmp

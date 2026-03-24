@@ -1,0 +1,1204 @@
+<!-- Visual Research Report Template by Curious Endeavor. Populate placeholders with research findings. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{BRAND_NAME}} — Visual Research Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════════════════════════════════════
+     BRAND CUSTOMIZATION
+     Change these variables to use your own branding
+     ═══════════════════════════════════════════════════════════════ */
+  :root {
+    --red: #cc0000;
+    --black: #1a1a1a;
+    --grey: #666;
+    --light: #999;
+    --border: #eee;
+    --bg: #fff;
+    --bg-alt: #fafafa;
+    --brand-name: 'Curious Endeavor';
+    --brand-url: 'https://curiousendeavor.com';
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     RESET & BASE
+     ═══════════════════════════════════════════════════════════════ */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) var(--bg);
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 300;
+    background: var(--bg);
+    color: var(--grey);
+    line-height: 1.7;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--red);
+    color: white;
+  }
+
+  /* Larken fallback — Georgia captures the warm serif character */
+  .larken {
+    font-family: 'larken', Georgia, 'Times New Roman', serif;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     LAYOUT
+     ═══════════════════════════════════════════════════════════════ */
+  .layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SIDEBAR
+     ═══════════════════════════════════════════════════════════════ */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    border-right: 1px solid var(--border);
+    padding: 28px 0;
+    overflow-y: auto;
+    background: var(--bg);
+    z-index: 100;
+  }
+
+  .sidebar-brand {
+    padding: 0 20px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .sidebar-brand a {
+    text-decoration: none;
+    font-family: 'larken', Georgia, serif;
+    font-weight: 400;
+    color: var(--red);
+    font-size: 13px;
+    letter-spacing: -0.02em;
+    display: block;
+    transition: opacity 0.3s;
+  }
+
+  .sidebar-brand a:hover {
+    opacity: 0.7;
+  }
+
+  .sidebar nav {
+    padding: 0 8px;
+  }
+
+  .sidebar nav a {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 6px 12px;
+    text-decoration: none;
+    color: var(--light);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    transition: color 0.2s;
+  }
+
+  .sidebar nav a:hover {
+    color: var(--black);
+  }
+
+  .sidebar nav a .nav-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--light);
+    min-width: 18px;
+  }
+
+  .sidebar nav a.active {
+    color: var(--black);
+  }
+
+  .sidebar nav a.active .nav-num {
+    color: var(--red);
+  }
+
+  .sidebar-meta {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--light);
+    line-height: 1.8;
+  }
+
+  .sidebar-meta .meta-label {
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--red);
+    margin-bottom: 2px;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SCROLL PROGRESS
+     ═══════════════════════════════════════════════════════════════ */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 200px;
+    right: 0;
+    height: 1px;
+    background: var(--border);
+    z-index: 200;
+  }
+
+  .scroll-progress-bar {
+    height: 100%;
+    background: var(--red);
+    width: 0%;
+    transition: width 0.1s;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     MAIN
+     ═══════════════════════════════════════════════════════════════ */
+  .main { padding: 0; }
+
+  /* Header */
+  .report-header {
+    padding: 80px 80px 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .report-header .overline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 24px;
+  }
+
+  .report-header h1 {
+    font-family: 'larken', Georgia, serif;
+    font-size: 52px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    color: var(--black);
+  }
+
+  .report-header .subtitle {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--grey);
+    max-width: 540px;
+    line-height: 1.7;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 48px;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .header-meta-item .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    margin-bottom: 4px;
+  }
+
+  .header-meta-item .value {
+    font-size: 13px;
+    color: var(--grey);
+    font-weight: 400;
+  }
+
+  /* Capabilities banner */
+  .capabilities {
+    padding: 16px 80px;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--light);
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .capabilities .cap-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+
+  .cap-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--grey);
+  }
+
+  .cap-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--black);
+  }
+
+  .cap-dot.warn { background: var(--light); }
+  .cap-dot.off { background: var(--border); }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SECTIONS
+     ═══════════════════════════════════════════════════════════════ */
+  .section {
+    padding: 80px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section.alt {
+    background: var(--bg-alt);
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+
+  .section h2 {
+    font-family: 'larken', Georgia, serif;
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    color: var(--black);
+    line-height: 1.2;
+  }
+
+  .section h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    margin: 40px 0 16px;
+  }
+
+  .section p {
+    color: var(--grey);
+    max-width: 640px;
+    margin-bottom: 16px;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     DATA GRID
+     ═══════════════════════════════════════════════════════════════ */
+  .data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  .data-cell {
+    background: var(--bg);
+    padding: 28px 20px;
+  }
+
+  .alt .data-cell {
+    background: var(--bg-alt);
+  }
+
+  .data-cell .cell-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+
+  .data-cell .cell-value {
+    font-family: 'larken', Georgia, serif;
+    font-size: 28px;
+    color: var(--black);
+    letter-spacing: -0.02em;
+  }
+
+  .data-cell .cell-note {
+    font-size: 12px;
+    color: var(--light);
+    margin-top: 4px;
+    font-weight: 300;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     IMAGE PLACEHOLDERS
+     ═══════════════════════════════════════════════════════════════ */
+  .image-placeholder {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--light);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: border-color 0.2s;
+  }
+
+  .image-placeholder:hover {
+    border-color: var(--light);
+  }
+
+  .image-placeholder .ph-icon {
+    font-size: 20px;
+    opacity: 0.25;
+  }
+
+  .image-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 280px 200px;
+    gap: 1px;
+    margin: 24px 0;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .image-grid > * {
+    background: var(--bg);
+  }
+
+  .image-grid .img-hero {
+    grid-row: 1 / -1;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     COLOR SWATCHES
+     ═══════════════════════════════════════════════════════════════ */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  .color-swatch {
+    height: 100px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 12px 16px;
+  }
+
+  .color-swatch .swatch-info {
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .color-swatch .swatch-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .color-swatch .swatch-hex {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    opacity: 0.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     TYPOGRAPHY SPECIMENS
+     ═══════════════════════════════════════════════════════════════ */
+  .type-specimen {
+    padding: 28px 20px;
+    border: 1px solid var(--border);
+    margin: 12px 0;
+    transition: border-color 0.2s;
+  }
+
+  .type-specimen:hover {
+    border-color: var(--light);
+  }
+
+  .type-specimen .specimen-sample {
+    font-size: 32px;
+    margin-bottom: 16px;
+    line-height: 1.2;
+    color: var(--black);
+  }
+
+  .type-specimen .specimen-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--light);
+    display: flex;
+    gap: 24px;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     TAGS
+     ═══════════════════════════════════════════════════════════════ */
+  .tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin: 2px;
+    transition: border-color 0.2s;
+  }
+
+  .tag:hover { border-color: var(--light); }
+  .tag.borrow { border-color: var(--black); color: var(--black); }
+  .tag.reject { border-color: var(--light); color: var(--light); }
+  .tag.watch { border-color: var(--grey); color: var(--grey); }
+
+  /* ═══════════════════════════════════════════════════════════════
+     COMPARISON TABLE
+     ═══════════════════════════════════════════════════════════════ */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 13px;
+  }
+
+  .compare-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    font-weight: 500;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .compare-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--grey);
+    font-weight: 300;
+    vertical-align: top;
+  }
+
+  .compare-table tr:hover td {
+    background: var(--bg-alt);
+  }
+
+  .compare-table .brand-col {
+    color: var(--black);
+    font-weight: 400;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     TIMELINE
+     ═══════════════════════════════════════════════════════════════ */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+    margin: 24px 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 28px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -37px;
+    top: 7px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid var(--black);
+    background: var(--bg);
+  }
+
+  .timeline-item .tl-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    margin-bottom: 4px;
+  }
+
+  .timeline-item .tl-text {
+    color: var(--grey);
+    font-size: 13px;
+    font-weight: 300;
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     PLATFORM CARDS
+     ═══════════════════════════════════════════════════════════════ */
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  .platform-card {
+    background: var(--bg);
+    padding: 28px 20px;
+    transition: background 0.2s;
+  }
+
+  .alt .platform-card {
+    background: var(--bg-alt);
+  }
+
+  .platform-card:hover {
+    background: var(--bg-alt);
+  }
+
+  .platform-card .plat-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
+
+  .platform-card .plat-stat {
+    font-family: 'larken', Georgia, serif;
+    font-size: 28px;
+    color: var(--black);
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+  }
+
+  .platform-card .plat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--light);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+
+  .platform-card .plat-detail {
+    font-size: 12px;
+    color: var(--grey);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     CAMPAIGN CARDS
+     ═══════════════════════════════════════════════════════════════ */
+  .campaign-card {
+    border: 1px solid var(--border);
+    padding: 28px 20px;
+    margin: 12px 0;
+    display: grid;
+    grid-template-columns: 1fr 180px;
+    gap: 28px;
+    align-items: start;
+    transition: border-color 0.2s;
+  }
+
+  .campaign-card:hover {
+    border-color: var(--light);
+  }
+
+  .campaign-card .camp-title {
+    font-family: 'larken', Georgia, serif;
+    font-size: 22px;
+    color: var(--black);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .campaign-card .camp-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--light);
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .campaign-card .camp-desc {
+    font-size: 13px;
+    color: var(--grey);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     STRENGTH / WEAKNESS BARS
+     ═══════════════════════════════════════════════════════════════ */
+  .sw-item {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .sw-label {
+    text-align: right;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--grey);
+  }
+
+  .sw-bar {
+    height: 2px;
+    background: var(--border);
+    position: relative;
+  }
+
+  .sw-bar-fill {
+    height: 100%;
+    background: var(--black);
+    transition: width 0.8s ease-out;
+  }
+
+  .sw-bar-fill.low {
+    background: var(--light);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     AUDIENCE
+     ═══════════════════════════════════════════════════════════════ */
+  .audience-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  .audience-stat {
+    background: var(--bg);
+    padding: 28px;
+    text-align: center;
+  }
+
+  .alt .audience-stat {
+    background: var(--bg-alt);
+  }
+
+  .audience-stat .aud-value {
+    font-family: 'larken', Georgia, serif;
+    font-size: 40px;
+    color: var(--black);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .audience-stat .aud-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════════ */
+  .report-footer {
+    padding: 48px 80px;
+    text-align: center;
+  }
+
+  .report-footer .footer-rule {
+    width: 40px;
+    height: 1px;
+    background: var(--border);
+    margin: 0 auto 16px;
+  }
+
+  .report-footer p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--light);
+  }
+
+  .report-footer a {
+    color: var(--red);
+    text-decoration: none;
+  }
+
+  .report-footer a:hover {
+    opacity: 0.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     PRINT
+     ═══════════════════════════════════════════════════════════════ */
+  @media print {
+    .sidebar, .scroll-progress { display: none; }
+    .layout { grid-template-columns: 1fr; }
+    .section { padding: 32px 40px; }
+    .report-header { padding: 40px; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════════════════════════════ */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .section, .report-header { padding: 48px 24px; }
+    .report-header h1 { font-size: 36px; }
+    .image-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+    .image-grid .img-hero { grid-row: auto; }
+    .campaign-card { grid-template-columns: 1fr; }
+    .capabilities { padding: 16px 24px; flex-wrap: wrap; }
+    .scroll-progress { left: 0; }
+    .header-meta { flex-wrap: wrap; gap: 24px; }
+    .report-footer { padding: 48px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress"><div class="scroll-progress-bar" id="progressBar"></div></div>
+
+<div class="layout">
+
+  <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <!-- Replace brand name and URL to use your own branding -->
+      <a href="https://curiousendeavor.com" target="_blank">Curious Endeavor</a>
+    </div>
+    <nav id="sidebarNav">
+      <a href="#quick-facts"><span class="nav-num">01</span> Quick Facts</a>
+      <a href="#positioning"><span class="nav-num">02</span> Positioning</a>
+      <a href="#brand-evolution"><span class="nav-num">03</span> Brand Evolution</a>
+      <a href="#color-palette"><span class="nav-num">04</span> Color Palette</a>
+      <a href="#typography"><span class="nav-num">05</span> Typography</a>
+      <a href="#layout-ux"><span class="nav-num">06</span> Layout & UX</a>
+      <a href="#assessment"><span class="nav-num">07</span> Assessment</a>
+      <a href="#strategic-verdict"><span class="nav-num">08</span> Strategic Verdict</a>
+      <a href="#brand-personality"><span class="nav-num">09</span> Brand Personality</a>
+      <a href="#vs-client"><span class="nav-num">10</span> vs {{CLIENT_NAME}}</a>
+      <a href="#social-strategy"><span class="nav-num">11</span> Social Strategy</a>
+      <a href="#content-campaign"><span class="nav-num">12</span> Content & Campaign</a>
+      <a href="#audience"><span class="nav-num">13</span> Audience</a>
+    </nav>
+    <div class="sidebar-meta">
+      <div class="meta-label">Generated</div>
+      {{DATE}}<br>
+      <div class="meta-label" style="margin-top: 12px;">Client</div>
+      {{CLIENT_NAME}}
+    </div>
+  </aside>
+
+  <!-- ═══════════════ MAIN ═══════════════ -->
+  <main class="main">
+
+    <header class="report-header">
+      <div class="overline">Visual Research Report</div>
+      <h1 class="larken">{{BRAND_NAME}}</h1>
+      <p class="subtitle">Comprehensive visual identity analysis covering brand positioning, design language, social presence, and campaign strategy. Prepared for competitive intelligence against {{CLIENT_NAME}}.</p>
+      <div class="header-meta">
+        <div class="header-meta-item">
+          <div class="label">Subject</div>
+          <div class="value">{{BRAND_NAME}}</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="label">Agency of Record</div>
+          <div class="value">{{AGENCY_NAME}}</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="label">Sector</div>
+          <div class="value">{{SECTOR}}</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="label">Threat Level</div>
+          <div class="value">{{THREAT_LEVEL}}</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Capabilities banner: list research tools used and their status.
+         Use cap-dot (active), cap-dot warn (partial), or cap-dot off (unavailable). -->
+    <div class="capabilities">
+      <span class="cap-label">Setup</span>
+      <div class="cap-item"><div class="cap-dot {{CAP_GEMINI}}"></div> Gemini Vision</div>
+      <div class="cap-item"><div class="cap-dot {{CAP_PLAYWRIGHT}}"></div> Playwright</div>
+      <div class="cap-item"><div class="cap-dot {{CAP_INSTAGRAM}}"></div> Instagram API</div>
+      <div class="cap-item"><div class="cap-dot {{CAP_YTDLP}}"></div> yt-dlp</div>
+      <div class="cap-item"><div class="cap-dot {{CAP_SCRAPLING}}"></div> Scrapling</div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 01 — Quick Facts
+         Key metrics and numbers about the brand. Uses a data-grid with
+         up to 6 metric cells. Each cell has a label, value, and note.
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="quick-facts">
+      <div class="section-num">01 &mdash; Quick Facts</div>
+      <h2 class="larken">The Numbers</h2>
+      <div class="data-grid">
+        <div class="data-cell">
+          <div class="cell-label">{{METRIC_1_LABEL}}</div>
+          <div class="cell-value">{{METRIC_1_VALUE}}</div>
+          <div class="cell-note">{{METRIC_1_NOTE}}</div>
+        </div>
+        <div class="data-cell">
+          <div class="cell-label">{{METRIC_2_LABEL}}</div>
+          <div class="cell-value">{{METRIC_2_VALUE}}</div>
+          <div class="cell-note">{{METRIC_2_NOTE}}</div>
+        </div>
+        <div class="data-cell">
+          <div class="cell-label">{{METRIC_3_LABEL}}</div>
+          <div class="cell-value">{{METRIC_3_VALUE}}</div>
+          <div class="cell-note">{{METRIC_3_NOTE}}</div>
+        </div>
+        <div class="data-cell">
+          <div class="cell-label">{{METRIC_4_LABEL}}</div>
+          <div class="cell-value">{{METRIC_4_VALUE}}</div>
+          <div class="cell-note">{{METRIC_4_NOTE}}</div>
+        </div>
+        <div class="data-cell">
+          <div class="cell-label">{{METRIC_5_LABEL}}</div>
+          <div class="cell-value">{{METRIC_5_VALUE}}</div>
+          <div class="cell-note">{{METRIC_5_NOTE}}</div>
+        </div>
+        <div class="data-cell">
+          <div class="cell-label">{{METRIC_6_LABEL}}</div>
+          <div class="cell-value">{{METRIC_6_VALUE}}</div>
+          <div class="cell-note">{{METRIC_6_NOTE}}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 02 — Positioning
+         Market position, mission statement, key differentiators.
+         Includes an image grid for screenshots and visual evidence.
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section alt" id="positioning">
+      <div class="section-num">02 &mdash; Positioning</div>
+      <h2 class="larken">Market Position</h2>
+      {{SECTION_02_CONTENT}}
+      <div class="image-grid">
+        <div class="image-placeholder img-hero" style="min-height: 280px;">
+          <span class="ph-icon">&#9634;</span>
+          <span>Homepage Screenshot</span>
+        </div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>App Store Hero</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Product Screenshot 1</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Product Screenshot 2</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Product Screenshot 3</span></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 03 — Brand Evolution
+         Timeline of key brand milestones and identity changes.
+         Uses timeline component with year markers and descriptions.
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="brand-evolution">
+      <div class="section-num">03 &mdash; Brand Evolution</div>
+      <h2 class="larken">Timeline</h2>
+      {{SECTION_03_CONTENT}}
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 04 — Color Palette
+         Brand color system with swatches. Each swatch needs a hex color
+         for the background, a name, the hex code, and text color (light
+         or dark depending on swatch brightness).
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section alt" id="color-palette">
+      <div class="section-num">04 &mdash; Color Palette</div>
+      <h2 class="larken">Color System</h2>
+      <p>{{SECTION_04_INTRO}}</p>
+      <div class="color-grid">
+        <div class="color-swatch" style="background: {{COLOR_1_HEX}};">
+          <div class="swatch-info" style="color: {{COLOR_1_TEXT}};"><span class="swatch-name">{{COLOR_1_NAME}}</span><span class="swatch-hex">{{COLOR_1_HEX}}</span></div>
+        </div>
+        <div class="color-swatch" style="background: {{COLOR_2_HEX}};">
+          <div class="swatch-info" style="color: {{COLOR_2_TEXT}};"><span class="swatch-name">{{COLOR_2_NAME}}</span><span class="swatch-hex">{{COLOR_2_HEX}}</span></div>
+        </div>
+        <div class="color-swatch" style="background: {{COLOR_3_HEX}};">
+          <div class="swatch-info" style="color: {{COLOR_3_TEXT}};"><span class="swatch-name">{{COLOR_3_NAME}}</span><span class="swatch-hex">{{COLOR_3_HEX}}</span></div>
+        </div>
+        <div class="color-swatch" style="background: {{COLOR_4_HEX}};">
+          <div class="swatch-info" style="color: {{COLOR_4_TEXT}};"><span class="swatch-name">{{COLOR_4_NAME}}</span><span class="swatch-hex">{{COLOR_4_HEX}}</span></div>
+        </div>
+        <div class="color-swatch" style="background: {{COLOR_5_HEX}};">
+          <div class="swatch-info" style="color: {{COLOR_5_TEXT}};"><span class="swatch-name">{{COLOR_5_NAME}}</span><span class="swatch-hex">{{COLOR_5_HEX}}</span></div>
+        </div>
+        <div class="color-swatch" style="background: {{COLOR_6_HEX}};">
+          <div class="swatch-info" style="color: {{COLOR_6_TEXT}};"><span class="swatch-name">{{COLOR_6_NAME}}</span><span class="swatch-hex">{{COLOR_6_HEX}}</span></div>
+        </div>
+      </div>
+      <h3>Usage Pattern</h3>
+      <p>{{SECTION_04_USAGE}}</p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 05 — Typography
+         Type system analysis with specimen blocks. Each specimen shows
+         a sample string, font metadata, and usage context.
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="typography">
+      <div class="section-num">05 &mdash; Typography</div>
+      <h2 class="larken">Type System</h2>
+      {{SECTION_05_CONTENT}}
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 06 — Layout & UX
+         UI/UX patterns analysis: information density, navigation,
+         interaction patterns. Includes image grid for screen captures.
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section alt" id="layout-ux">
+      <div class="section-num">06 &mdash; Layout & UX</div>
+      <h2 class="larken">Layout & UX Patterns</h2>
+      {{SECTION_06_CONTENT}}
+      <div class="image-grid" style="grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 280px;">
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Screen Capture 1</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Screen Capture 2</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Screen Capture 3</span></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 07 — Assessment
+         Strengths and weaknesses analysis using horizontal bar charts.
+         Each sw-item has a label and a fill width (percentage).
+         Use class "low" on sw-bar-fill for weaknesses.
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="assessment">
+      <div class="section-num">07 &mdash; Assessment</div>
+      <h2 class="larken">Strengths & Weaknesses</h2>
+      {{SECTION_07_CONTENT}}
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 08 — Strategic Verdict
+         Borrow / Reject / Watch analysis vs the client. Uses tag
+         components with classes: borrow, reject, watch.
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section alt" id="strategic-verdict">
+      <div class="section-num">08 &mdash; Strategic Verdict</div>
+      <h2 class="larken">Strategic Verdict vs {{CLIENT_NAME}}</h2>
+      {{SECTION_08_CONTENT}}
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 09 — Brand Personality
+         Archetype, voice, and audience signal. Uses a 3-column data
+         grid plus tone sample specimens.
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="brand-personality">
+      <div class="section-num">09 &mdash; Brand Personality</div>
+      <h2 class="larken">Brand Personality</h2>
+      {{SECTION_09_CONTENT}}
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 10 — Head to Head
+         Side-by-side comparison table of the researched brand vs the
+         client across key dimensions (color, typography, tone, etc.).
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section alt" id="vs-client">
+      <div class="section-num">10 &mdash; Head to Head</div>
+      <h2 class="larken">{{BRAND_NAME}} vs {{CLIENT_NAME}}</h2>
+      <table class="compare-table">
+        <thead>
+          <tr><th>Dimension</th><th>{{BRAND_NAME}}</th><th>{{CLIENT_NAME}}</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>{{COMPARE_ROW_1_DIMENSION}}</td><td class="brand-col">{{COMPARE_ROW_1_BRAND}}</td><td>{{COMPARE_ROW_1_CLIENT}}</td></tr>
+          <tr><td>{{COMPARE_ROW_2_DIMENSION}}</td><td class="brand-col">{{COMPARE_ROW_2_BRAND}}</td><td>{{COMPARE_ROW_2_CLIENT}}</td></tr>
+          <tr><td>{{COMPARE_ROW_3_DIMENSION}}</td><td class="brand-col">{{COMPARE_ROW_3_BRAND}}</td><td>{{COMPARE_ROW_3_CLIENT}}</td></tr>
+          <tr><td>{{COMPARE_ROW_4_DIMENSION}}</td><td class="brand-col">{{COMPARE_ROW_4_BRAND}}</td><td>{{COMPARE_ROW_4_CLIENT}}</td></tr>
+          <tr><td>{{COMPARE_ROW_5_DIMENSION}}</td><td class="brand-col">{{COMPARE_ROW_5_BRAND}}</td><td>{{COMPARE_ROW_5_CLIENT}}</td></tr>
+          <tr><td>{{COMPARE_ROW_6_DIMENSION}}</td><td class="brand-col">{{COMPARE_ROW_6_BRAND}}</td><td>{{COMPARE_ROW_6_CLIENT}}</td></tr>
+          <tr><td>{{COMPARE_ROW_7_DIMENSION}}</td><td class="brand-col">{{COMPARE_ROW_7_BRAND}}</td><td>{{COMPARE_ROW_7_CLIENT}}</td></tr>
+          <tr><td>{{COMPARE_ROW_8_DIMENSION}}</td><td class="brand-col">{{COMPARE_ROW_8_BRAND}}</td><td>{{COMPARE_ROW_8_CLIENT}}</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 11 — Social Strategy
+         Social media presence analysis. Uses platform-card components
+         with follower stats and strategy details per platform.
+         Includes image grid for social profile captures.
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="social-strategy">
+      <div class="section-num">11 &mdash; Social Strategy</div>
+      <h2 class="larken">Social Presence</h2>
+      {{SECTION_11_CONTENT}}
+      <div class="image-grid" style="grid-template-columns: 1fr 1fr; grid-template-rows: 220px;">
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Social Profile Capture 1</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Social Profile Capture 2</span></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 12 — Content & Campaign
+         Hero campaigns analysis. Uses campaign-card components with
+         title, meta (agency, year, channels), description, and image.
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section alt" id="content-campaign">
+      <div class="section-num">12 &mdash; Content & Campaign</div>
+      <h2 class="larken">Hero Campaigns</h2>
+      {{SECTION_12_CONTENT}}
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SECTION 13 — Audience & Community
+         Audience demographics (using audience-grid with 3 stats),
+         sentiment analysis, community management, and UGC patterns.
+         Includes image grid for UGC samples.
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="audience">
+      <div class="section-num">13 &mdash; Audience & Community</div>
+      <h2 class="larken">Audience & Community</h2>
+      {{SECTION_13_CONTENT}}
+      <div class="image-grid" style="grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 200px;">
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>UGC Sample 1</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>UGC Sample 2</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Community Sentiment</span></div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         APPENDIX — Image Inventory
+         Table listing all collected visual assets with source, filename,
+         and intended use. Populate rows as needed.
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section alt" id="inventory">
+      <div class="section-num">Appendix &mdash; Image Inventory</div>
+      <h2 class="larken">Collected Assets</h2>
+      <table class="compare-table">
+        <thead><tr><th>#</th><th>Source</th><th>File</th><th>Use</th></tr></thead>
+        <tbody>
+          {{APPENDIX_IMAGE_INVENTORY}}
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="report-footer">
+      <div class="footer-rule"></div>
+      <p>Generated with Visual Research by <a href="https://curiousendeavor.com" target="_blank">Curious Endeavor</a></p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progressBar').style.width = (window.scrollY / h * 100) + '%';
+  });
+
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('#sidebarNav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`#sidebarNav a[href="#${entry.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>

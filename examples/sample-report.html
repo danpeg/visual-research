@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cash App — Visual Research Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════════════════════════════════════
+     BRAND CUSTOMIZATION
+     Change these variables to use your own branding
+     ═══════════════════════════════════════════════════════════════ */
+  :root {
+    --red: #cc0000;
+    --black: #1a1a1a;
+    --grey: #666;
+    --light: #999;
+    --border: #eee;
+    --bg: #fff;
+    --bg-alt: #fafafa;
+    --brand-name: 'Curious Endeavor';
+    --brand-url: 'https://curiousendeavor.com';
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     RESET & BASE
+     ═══════════════════════════════════════════════════════════════ */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) var(--bg);
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-weight: 300;
+    background: var(--bg);
+    color: var(--grey);
+    line-height: 1.7;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--red);
+    color: white;
+  }
+
+  /* Larken fallback — Georgia captures the warm serif character */
+  .larken {
+    font-family: 'larken', Georgia, 'Times New Roman', serif;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     LAYOUT
+     ═══════════════════════════════════════════════════════════════ */
+  .layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SIDEBAR
+     ═══════════════════════════════════════════════════════════════ */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    border-right: 1px solid var(--border);
+    padding: 28px 0;
+    overflow-y: auto;
+    background: var(--bg);
+    z-index: 100;
+  }
+
+  .sidebar-brand {
+    padding: 0 20px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .sidebar-brand a {
+    text-decoration: none;
+    font-family: 'larken', Georgia, serif;
+    font-weight: 400;
+    color: var(--red);
+    font-size: 13px;
+    letter-spacing: -0.02em;
+    display: block;
+    transition: opacity 0.3s;
+  }
+
+  .sidebar-brand a:hover {
+    opacity: 0.7;
+  }
+
+  .sidebar nav {
+    padding: 0 8px;
+  }
+
+  .sidebar nav a {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 6px 12px;
+    text-decoration: none;
+    color: var(--light);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    transition: color 0.2s;
+  }
+
+  .sidebar nav a:hover {
+    color: var(--black);
+  }
+
+  .sidebar nav a .nav-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--light);
+    min-width: 18px;
+  }
+
+  .sidebar nav a.active {
+    color: var(--black);
+  }
+
+  .sidebar nav a.active .nav-num {
+    color: var(--red);
+  }
+
+  .sidebar-meta {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--light);
+    line-height: 1.8;
+  }
+
+  .sidebar-meta .meta-label {
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--red);
+    margin-bottom: 2px;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SCROLL PROGRESS
+     ═══════════════════════════════════════════════════════════════ */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 200px;
+    right: 0;
+    height: 1px;
+    background: var(--border);
+    z-index: 200;
+  }
+
+  .scroll-progress-bar {
+    height: 100%;
+    background: var(--red);
+    width: 0%;
+    transition: width 0.1s;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     MAIN
+     ═══════════════════════════════════════════════════════════════ */
+  .main { padding: 0; }
+
+  /* Header */
+  .report-header {
+    padding: 80px 80px 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .report-header .overline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 24px;
+  }
+
+  .report-header h1 {
+    font-family: 'larken', Georgia, serif;
+    font-size: 52px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    color: var(--black);
+  }
+
+  .report-header .subtitle {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--grey);
+    max-width: 540px;
+    line-height: 1.7;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 48px;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .header-meta-item .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    margin-bottom: 4px;
+  }
+
+  .header-meta-item .value {
+    font-size: 13px;
+    color: var(--grey);
+    font-weight: 400;
+  }
+
+  /* Capabilities banner */
+  .capabilities {
+    padding: 16px 80px;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--light);
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .capabilities .cap-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+
+  .cap-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--grey);
+  }
+
+  .cap-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--black);
+  }
+
+  .cap-dot.warn { background: var(--light); }
+  .cap-dot.off { background: var(--border); }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SECTIONS
+     ═══════════════════════════════════════════════════════════════ */
+  .section {
+    padding: 80px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section.alt {
+    background: var(--bg-alt);
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+
+  .section h2 {
+    font-family: 'larken', Georgia, serif;
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    color: var(--black);
+    line-height: 1.2;
+  }
+
+  .section h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    margin: 40px 0 16px;
+  }
+
+  .section p {
+    color: var(--grey);
+    max-width: 640px;
+    margin-bottom: 16px;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     DATA GRID
+     ═══════════════════════════════════════════════════════════════ */
+  .data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  .data-cell {
+    background: var(--bg);
+    padding: 28px 20px;
+  }
+
+  .alt .data-cell {
+    background: var(--bg-alt);
+  }
+
+  .data-cell .cell-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+
+  .data-cell .cell-value {
+    font-family: 'larken', Georgia, serif;
+    font-size: 28px;
+    color: var(--black);
+    letter-spacing: -0.02em;
+  }
+
+  .data-cell .cell-note {
+    font-size: 12px;
+    color: var(--light);
+    margin-top: 4px;
+    font-weight: 300;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     IMAGE PLACEHOLDERS
+     ═══════════════════════════════════════════════════════════════ */
+  .image-placeholder {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--light);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: border-color 0.2s;
+  }
+
+  .image-placeholder:hover {
+    border-color: var(--light);
+  }
+
+  .image-placeholder .ph-icon {
+    font-size: 20px;
+    opacity: 0.25;
+  }
+
+  .image-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 280px 200px;
+    gap: 1px;
+    margin: 24px 0;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .image-grid > * {
+    background: var(--bg);
+  }
+
+  .image-grid .img-hero {
+    grid-row: 1 / -1;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     COLOR SWATCHES
+     ═══════════════════════════════════════════════════════════════ */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  .color-swatch {
+    height: 100px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 12px 16px;
+  }
+
+  .color-swatch .swatch-info {
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .color-swatch .swatch-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .color-swatch .swatch-hex {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    opacity: 0.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     TYPOGRAPHY SPECIMENS
+     ═══════════════════════════════════════════════════════════════ */
+  .type-specimen {
+    padding: 28px 20px;
+    border: 1px solid var(--border);
+    margin: 12px 0;
+    transition: border-color 0.2s;
+  }
+
+  .type-specimen:hover {
+    border-color: var(--light);
+  }
+
+  .type-specimen .specimen-sample {
+    font-size: 32px;
+    margin-bottom: 16px;
+    line-height: 1.2;
+    color: var(--black);
+  }
+
+  .type-specimen .specimen-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--light);
+    display: flex;
+    gap: 24px;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     TAGS
+     ═══════════════════════════════════════════════════════════════ */
+  .tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin: 2px;
+    transition: border-color 0.2s;
+  }
+
+  .tag:hover { border-color: var(--light); }
+  .tag.borrow { border-color: var(--black); color: var(--black); }
+  .tag.reject { border-color: var(--light); color: var(--light); }
+  .tag.watch { border-color: var(--grey); color: var(--grey); }
+
+  /* ═══════════════════════════════════════════════════════════════
+     COMPARISON TABLE
+     ═══════════════════════════════════════════════════════════════ */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 13px;
+  }
+
+  .compare-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    font-weight: 500;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .compare-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--grey);
+    font-weight: 300;
+    vertical-align: top;
+  }
+
+  .compare-table tr:hover td {
+    background: var(--bg-alt);
+  }
+
+  .compare-table .brand-col {
+    color: var(--black);
+    font-weight: 400;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     TIMELINE
+     ═══════════════════════════════════════════════════════════════ */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+    margin: 24px 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 28px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -37px;
+    top: 7px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid var(--black);
+    background: var(--bg);
+  }
+
+  .timeline-item .tl-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    margin-bottom: 4px;
+  }
+
+  .timeline-item .tl-text {
+    color: var(--grey);
+    font-size: 13px;
+    font-weight: 300;
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     PLATFORM CARDS
+     ═══════════════════════════════════════════════════════════════ */
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  .platform-card {
+    background: var(--bg);
+    padding: 28px 20px;
+    transition: background 0.2s;
+  }
+
+  .alt .platform-card {
+    background: var(--bg-alt);
+  }
+
+  .platform-card:hover {
+    background: var(--bg-alt);
+  }
+
+  .platform-card .plat-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
+
+  .platform-card .plat-stat {
+    font-family: 'larken', Georgia, serif;
+    font-size: 28px;
+    color: var(--black);
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+  }
+
+  .platform-card .plat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--light);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+
+  .platform-card .plat-detail {
+    font-size: 12px;
+    color: var(--grey);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     CAMPAIGN CARDS
+     ═══════════════════════════════════════════════════════════════ */
+  .campaign-card {
+    border: 1px solid var(--border);
+    padding: 28px 20px;
+    margin: 12px 0;
+    display: grid;
+    grid-template-columns: 1fr 180px;
+    gap: 28px;
+    align-items: start;
+    transition: border-color 0.2s;
+  }
+
+  .campaign-card:hover {
+    border-color: var(--light);
+  }
+
+  .campaign-card .camp-title {
+    font-family: 'larken', Georgia, serif;
+    font-size: 22px;
+    color: var(--black);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .campaign-card .camp-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--light);
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .campaign-card .camp-desc {
+    font-size: 13px;
+    color: var(--grey);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     STRENGTH / WEAKNESS BARS
+     ═══════════════════════════════════════════════════════════════ */
+  .sw-item {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    align-items: center;
+    margin: 10px 0;
+  }
+
+  .sw-label {
+    text-align: right;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--grey);
+  }
+
+  .sw-bar {
+    height: 2px;
+    background: var(--border);
+    position: relative;
+  }
+
+  .sw-bar-fill {
+    height: 100%;
+    background: var(--black);
+    transition: width 0.8s ease-out;
+  }
+
+  .sw-bar-fill.low {
+    background: var(--light);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     AUDIENCE
+     ═══════════════════════════════════════════════════════════════ */
+  .audience-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  .audience-stat {
+    background: var(--bg);
+    padding: 28px;
+    text-align: center;
+  }
+
+  .alt .audience-stat {
+    background: var(--bg-alt);
+  }
+
+  .audience-stat .aud-value {
+    font-family: 'larken', Georgia, serif;
+    font-size: 40px;
+    color: var(--black);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .audience-stat .aud-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════════ */
+  .report-footer {
+    padding: 48px 80px;
+    text-align: center;
+  }
+
+  .report-footer .footer-rule {
+    width: 40px;
+    height: 1px;
+    background: var(--border);
+    margin: 0 auto 16px;
+  }
+
+  .report-footer p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--light);
+  }
+
+  .report-footer a {
+    color: var(--red);
+    text-decoration: none;
+  }
+
+  .report-footer a:hover {
+    opacity: 0.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     PRINT
+     ═══════════════════════════════════════════════════════════════ */
+  @media print {
+    .sidebar, .scroll-progress { display: none; }
+    .layout { grid-template-columns: 1fr; }
+    .section { padding: 32px 40px; }
+    .report-header { padding: 40px; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════════════════════════════ */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .section, .report-header { padding: 48px 24px; }
+    .report-header h1 { font-size: 36px; }
+    .image-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+    .image-grid .img-hero { grid-row: auto; }
+    .campaign-card { grid-template-columns: 1fr; }
+    .capabilities { padding: 16px 24px; flex-wrap: wrap; }
+    .scroll-progress { left: 0; }
+    .header-meta { flex-wrap: wrap; gap: 24px; }
+    .report-footer { padding: 48px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress"><div class="scroll-progress-bar" id="progressBar"></div></div>
+
+<div class="layout">
+
+  <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <!-- Replace brand name and URL to use your own branding -->
+      <a href="https://curiousendeavor.com" target="_blank">Curious Endeavor</a>
+    </div>
+    <nav id="sidebarNav">
+      <a href="#quick-facts"><span class="nav-num">01</span> Quick Facts</a>
+      <a href="#positioning"><span class="nav-num">02</span> Positioning</a>
+      <a href="#brand-evolution"><span class="nav-num">03</span> Brand Evolution</a>
+      <a href="#color-palette"><span class="nav-num">04</span> Color Palette</a>
+      <a href="#typography"><span class="nav-num">05</span> Typography</a>
+      <a href="#layout-ux"><span class="nav-num">06</span> Layout & UX</a>
+      <a href="#assessment"><span class="nav-num">07</span> Assessment</a>
+      <a href="#strategic-verdict"><span class="nav-num">08</span> Strategic Verdict</a>
+      <a href="#brand-personality"><span class="nav-num">09</span> Brand Personality</a>
+      <a href="#vs-client"><span class="nav-num">10</span> vs Acme Finance</a>
+      <a href="#social-strategy"><span class="nav-num">11</span> Social Strategy</a>
+      <a href="#content-campaign"><span class="nav-num">12</span> Content & Campaign</a>
+      <a href="#audience"><span class="nav-num">13</span> Audience</a>
+    </nav>
+    <div class="sidebar-meta">
+      <div class="meta-label">Generated</div>
+      March 24, 2026<br>
+      <div class="meta-label" style="margin-top: 12px;">Client</div>
+      Acme Finance
+    </div>
+  </aside>
+
+  <!-- ═══════════════ MAIN ═══════════════ -->
+  <main class="main">
+
+    <header class="report-header">
+      <div class="overline">Visual Research Report</div>
+      <h1 class="larken">Cash App</h1>
+      <p class="subtitle">Comprehensive visual identity analysis covering brand positioning, design language, social presence, and campaign strategy. Prepared for competitive intelligence against Acme Finance.</p>
+      <div class="header-meta">
+        <div class="header-meta-item">
+          <div class="label">Subject</div>
+          <div class="value">Cash App by Block, Inc.</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="label">Agency of Record</div>
+          <div class="value">Anomaly / pgLang</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="label">Sector</div>
+          <div class="value">Fintech / Payments</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="label">Threat Level</div>
+          <div class="value">High</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="capabilities">
+      <span class="cap-label">Setup</span>
+      <div class="cap-item"><div class="cap-dot"></div> Gemini Vision</div>
+      <div class="cap-item"><div class="cap-dot"></div> Playwright</div>
+      <div class="cap-item"><div class="cap-dot"></div> Instagram API</div>
+      <div class="cap-item"><div class="cap-dot"></div> yt-dlp</div>
+      <div class="cap-item"><div class="cap-dot warn"></div> Scrapling</div>
+    </div>
+
+    <!-- §01 -->
+    <section class="section" id="quick-facts">
+      <div class="section-num">01 &mdash; Quick Facts</div>
+      <h2 class="larken">The Numbers</h2>
+      <div class="data-grid">
+        <div class="data-cell">
+          <div class="cell-label">Revenue</div>
+          <div class="cell-value">$12.6B</div>
+          <div class="cell-note">FY 2025 (Block, Inc.)</div>
+        </div>
+        <div class="data-cell">
+          <div class="cell-label">Monthly Active Users</div>
+          <div class="cell-value">57M</div>
+          <div class="cell-note">Q4 2025</div>
+        </div>
+        <div class="data-cell">
+          <div class="cell-label">Founded</div>
+          <div class="cell-value">2013</div>
+          <div class="cell-note">San Francisco, CA</div>
+        </div>
+        <div class="data-cell">
+          <div class="cell-label">Gross Profit</div>
+          <div class="cell-value">$2.25B</div>
+          <div class="cell-note">Cash App segment, 2025</div>
+        </div>
+        <div class="data-cell">
+          <div class="cell-label">Bitcoin Revenue</div>
+          <div class="cell-value">$2.4B</div>
+          <div class="cell-note">Q3 2025</div>
+        </div>
+        <div class="data-cell">
+          <div class="cell-label">Cash Card Users</div>
+          <div class="cell-value">24M</div>
+          <div class="cell-note">Active monthly, 2025</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §02 -->
+    <section class="section alt" id="positioning">
+      <div class="section-num">02 &mdash; Positioning</div>
+      <h2 class="larken">Market Position</h2>
+      <p>Cash App positions itself as the financial platform for the culture — not a bank, not a wallet, but a lifestyle product that happens to move money. It occupies the intersection of fintech utility and cultural relevance that no traditional competitor has managed to claim.</p>
+      <h3>Mission</h3>
+      <p>"Redefine the world's relationship with money by making it more relatable, instantly available, and universally accessible."</p>
+      <h3>Key Differentiators</h3>
+      <p>Cultural credibility through music/art partnerships (pgLang, Travis Scott). Peer-to-peer payment as social interaction. Cash Card customization as self-expression. Bitcoin buying integrated natively. Younger skew than Venmo (18-34 core demo).</p>
+      <div class="image-grid">
+        <div class="image-placeholder img-hero" style="min-height: 280px;">
+          <span class="ph-icon">&#9634;</span>
+          <span>Homepage Screenshot</span>
+        </div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>App Store Hero</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Cash Card Designs</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Bitcoin Feature</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Boost Offers</span></div>
+      </div>
+    </section>
+
+    <!-- §03 -->
+    <section class="section" id="brand-evolution">
+      <div class="section-num">03 &mdash; Brand Evolution</div>
+      <h2 class="larken">Timeline</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="tl-year">2013</div>
+          <div class="tl-text">Launched as "Square Cash" — a simple peer-to-peer payment tool. Square's utilitarian brand language. Blue/white palette.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-year">2015</div>
+          <div class="tl-text">Rebranded to "Cash App". Shed the Square parentage. Introduced the distinctive green palette and $ glyph icon.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-year">2018</div>
+          <div class="tl-text">Cash Card launched with customizable designs. Bitcoin buying added. Brand pivots from utility to lifestyle. Travis Scott partnership begins.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-year">2020</div>
+          <div class="tl-text">Stimulus check distribution cements mainstream adoption. Brand leans into cultural relevance. Anomaly takes over as agency. Green becomes iconic.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-year">2022</div>
+          <div class="tl-text">pgLang collaboration for "That's Money" campaign. Tax filing feature added. Brand voice sharpens — confident, clipped, street-smart.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-year">2024–25</div>
+          <div class="tl-text">Brokerage and lending features. Brand maintains cultural edge while pushing into serious financial services. Visual identity tightens around black/green contrast.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- §04 -->
+    <section class="section alt" id="color-palette">
+      <div class="section-num">04 &mdash; Color Palette</div>
+      <h2 class="larken">Color System</h2>
+      <p>Cash App's palette is ruthlessly restrained. The electric green on black is one of the most recognizable color signatures in fintech. Secondary colors appear only in Cash Card customization and promotional material.</p>
+      <div class="color-grid">
+        <div class="color-swatch" style="background: #00D632;">
+          <div class="swatch-info" style="color: #000;"><span class="swatch-name">Cash Green</span><span class="swatch-hex">#00D632</span></div>
+        </div>
+        <div class="color-swatch" style="background: #00AC2A;">
+          <div class="swatch-info" style="color: #000;"><span class="swatch-name">Deep Green</span><span class="swatch-hex">#00AC2A</span></div>
+        </div>
+        <div class="color-swatch" style="background: #000000;">
+          <div class="swatch-info" style="color: #fff;"><span class="swatch-name">Black</span><span class="swatch-hex">#000000</span></div>
+        </div>
+        <div class="color-swatch" style="background: #FFFFFF; border-bottom: 1px solid #eee;">
+          <div class="swatch-info" style="color: #1a1a1a;"><span class="swatch-name">White</span><span class="swatch-hex">#FFFFFF</span></div>
+        </div>
+        <div class="color-swatch" style="background: #1A1A1A;">
+          <div class="swatch-info" style="color: #999;"><span class="swatch-name">Surface Dark</span><span class="swatch-hex">#1A1A1A</span></div>
+        </div>
+        <div class="color-swatch" style="background: #F5F5F5;">
+          <div class="swatch-info" style="color: #1a1a1a;"><span class="swatch-name">Off-White</span><span class="swatch-hex">#F5F5F5</span></div>
+        </div>
+      </div>
+      <h3>Usage Pattern</h3>
+      <p>Green is used exclusively for CTAs, the logo mark, and key data points. It never appears as a background fill. Black dominates app UI surfaces. White is reserved for card-style containers and text on dark backgrounds. The restraint is the brand — fewer colors, louder presence.</p>
+    </section>
+
+    <!-- §05 -->
+    <section class="section" id="typography">
+      <div class="section-num">05 &mdash; Typography</div>
+      <h2 class="larken">Type System</h2>
+      <div class="type-specimen">
+        <div class="specimen-sample" style="font-family: -apple-system, 'Helvetica Neue', sans-serif; font-weight: 800;">Cash is for everyone.</div>
+        <div class="specimen-meta"><span>SF Pro Display / Heavy</span><span>Headlines</span><span>App + Marketing</span></div>
+      </div>
+      <div class="type-specimen">
+        <div class="specimen-sample" style="font-family: -apple-system, 'Helvetica Neue', sans-serif; font-weight: 400; font-size: 20px;">Send and receive money instantly. Buy Bitcoin. Get a free debit card. File your taxes for free.</div>
+        <div class="specimen-meta"><span>SF Pro Text / Regular</span><span>Body Copy</span><span>App UI</span></div>
+      </div>
+      <div class="type-specimen">
+        <div class="specimen-sample" style="font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 400; font-size: 20px; color: #00D632;">$CASHAPP &mdash; THAT'S MONEY</div>
+        <div class="specimen-meta"><span>Monospace / Campaign</span><span>Hashtags & Cashtags</span><span>Social + OOH</span></div>
+      </div>
+      <h3>Observations</h3>
+      <p>Typography is tight, heavy, and high-contrast. Headlines use max weight (800-900) in short, punchy sentences. No serif fonts anywhere in the system. Cashtag formatting ($USERNAME) uses a distinctive monospace treatment that has become a brand signifier in its own right.</p>
+    </section>
+
+    <!-- §06 -->
+    <section class="section alt" id="layout-ux">
+      <div class="section-num">06 &mdash; Layout & UX</div>
+      <h2 class="larken">Layout & UX Patterns</h2>
+      <h3>Information Density</h3>
+      <p>Low to medium. Cash App privileges negative space and single-action screens. The home screen shows balance + a numeric keypad — nothing else. Progressive disclosure throughout: features reveal on demand, never overwhelm upfront.</p>
+      <h3>Navigation</h3>
+      <p>Bottom tab bar with 5 items (Home, Pay, Banking, Cash Card, Investing). Each section is a full product area. Tab icons are custom, filled style, no labels on inactive states.</p>
+      <h3>Interaction Patterns</h3>
+      <p>Swipe-to-pay on the home screen. Card-based layouts for Boosts and offers. Bottom sheets for confirmations. Haptic feedback on transactions. The keypad interaction for entering amounts is the signature UX — it feels like a calculator, not a form.</p>
+      <div class="image-grid" style="grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 280px;">
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Home Screen</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Pay Flow</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Cash Card Tab</span></div>
+      </div>
+    </section>
+
+    <!-- §07 -->
+    <section class="section" id="assessment">
+      <div class="section-num">07 &mdash; Assessment</div>
+      <h2 class="larken">Strengths & Weaknesses</h2>
+      <h3>Strengths</h3>
+      <div class="sw-item"><div class="sw-label">Cultural Relevance</div><div class="sw-bar"><div class="sw-bar-fill" style="width: 95%;"></div></div></div>
+      <div class="sw-item"><div class="sw-label">Brand Recognition</div><div class="sw-bar"><div class="sw-bar-fill" style="width: 92%;"></div></div></div>
+      <div class="sw-item"><div class="sw-label">Visual Consistency</div><div class="sw-bar"><div class="sw-bar-fill" style="width: 90%;"></div></div></div>
+      <div class="sw-item"><div class="sw-label">Gen Z Adoption</div><div class="sw-bar"><div class="sw-bar-fill" style="width: 88%;"></div></div></div>
+      <div class="sw-item"><div class="sw-label">Product Simplicity</div><div class="sw-bar"><div class="sw-bar-fill" style="width: 85%;"></div></div></div>
+      <h3>Weaknesses</h3>
+      <div class="sw-item"><div class="sw-label">Trust / Safety</div><div class="sw-bar"><div class="sw-bar-fill low" style="width: 40%;"></div></div></div>
+      <div class="sw-item"><div class="sw-label">International</div><div class="sw-bar"><div class="sw-bar-fill low" style="width: 25%;"></div></div></div>
+      <div class="sw-item"><div class="sw-label">Older Demographics</div><div class="sw-bar"><div class="sw-bar-fill low" style="width: 35%;"></div></div></div>
+      <div class="sw-item"><div class="sw-label">Investment Depth</div><div class="sw-bar"><div class="sw-bar-fill low" style="width: 50%;"></div></div></div>
+    </section>
+
+    <!-- §08 -->
+    <section class="section alt" id="strategic-verdict">
+      <div class="section-num">08 &mdash; Strategic Verdict</div>
+      <h2 class="larken">Strategic Verdict vs Acme Finance</h2>
+      <h3>Borrow</h3>
+      <p><span class="tag borrow">Cultural Partnerships</span> <span class="tag borrow">Restraint in Color</span> <span class="tag borrow">Short-form Copy</span> <span class="tag borrow">Product as Brand</span></p>
+      <p>Cash App's collaboration model (pgLang, Kendrick) gives it cultural credibility that can't be bought with media spend. Acme Finance should find equivalent credibility vectors in its markets — finance creators, not celebrities.</p>
+      <h3>Reject</h3>
+      <p><span class="tag reject">US-Only Focus</span> <span class="tag reject">Gen Z Exclusivity</span> <span class="tag reject">Crypto-Forward Identity</span></p>
+      <p>Cash App's deliberate youth/US positioning is a limitation for Acme Finance's global, multi-generational audience. Don't mimic the skate-culture aesthetic — it would read as inauthentic.</p>
+      <h3>Watch</h3>
+      <p><span class="tag watch">Brokerage Expansion</span> <span class="tag watch">Tax Filing</span> <span class="tag watch">Banking Features</span></p>
+      <p>Cash App is steadily building a full financial platform. If they crack international expansion or launch social trading features, the overlap with Acme Finance's positioning increases dramatically.</p>
+    </section>
+
+    <!-- §09 -->
+    <section class="section" id="brand-personality">
+      <div class="section-num">09 &mdash; Brand Personality</div>
+      <h2 class="larken">Brand Personality</h2>
+      <div class="data-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="data-cell">
+          <div class="cell-label">Archetype</div>
+          <div class="cell-value" style="font-size: 20px;">The Rebel</div>
+          <div class="cell-note">Disrupts financial norms, speaks street language, rejects corporate tone</div>
+        </div>
+        <div class="data-cell">
+          <div class="cell-label">Voice</div>
+          <div class="cell-value" style="font-size: 20px;">Clipped & Confident</div>
+          <div class="cell-note">Short sentences. Declarative. No qualifiers. Sounds like a text from your coolest friend.</div>
+        </div>
+        <div class="data-cell">
+          <div class="cell-label">Audience Signal</div>
+          <div class="cell-value" style="font-size: 20px;">Insider Status</div>
+          <div class="cell-note">Using Cash App signals you're in the know. It's the app your Venmo-using parents don't have.</div>
+        </div>
+      </div>
+      <h3>Tone Samples</h3>
+      <div class="type-specimen" style="border-left: 2px solid var(--black);">
+        <div class="specimen-sample" style="font-size: 20px; font-family: -apple-system, sans-serif; font-weight: 600; color: var(--black);">"Taxes? Free. Seriously."<br>"That's money."<br>"You already know."</div>
+        <div class="specimen-meta"><span>Push notifications & social captions</span></div>
+      </div>
+    </section>
+
+    <!-- §10 -->
+    <section class="section alt" id="vs-client">
+      <div class="section-num">10 &mdash; Head to Head</div>
+      <h2 class="larken">Cash App vs Acme Finance</h2>
+      <table class="compare-table">
+        <thead>
+          <tr><th>Dimension</th><th>Cash App</th><th>Acme Finance</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Primary Color</td><td class="brand-col">Electric Green #00D632</td><td>Teal/Green #27AE60</td></tr>
+          <tr><td>Typography</td><td class="brand-col">SF Pro, Heavy weight, tight</td><td>Custom sans-serif, moderate weight</td></tr>
+          <tr><td>Tone of Voice</td><td class="brand-col">Street-smart, clipped, confident</td><td>Friendly, educational, approachable</td></tr>
+          <tr><td>Target Demo</td><td class="brand-col">18-34, US, culture-forward</td><td>25-45, global, aspiring investors</td></tr>
+          <tr><td>Brand Personality</td><td class="brand-col">Rebel / Insider</td><td>Guide / Community Leader</td></tr>
+          <tr><td>Visual Density</td><td class="brand-col">Minimal, high-contrast</td><td>Medium, data-rich</td></tr>
+          <tr><td>Cultural Strategy</td><td class="brand-col">Music + art partnerships</td><td>Sports sponsorships, social trading</td></tr>
+          <tr><td>Social Strength</td><td class="brand-col">Instagram, TikTok dominant</td><td>YouTube, Twitter (finance discussion)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- §11 -->
+    <section class="section" id="social-strategy">
+      <div class="section-num">11 &mdash; Social Strategy</div>
+      <h2 class="larken">Social Presence</h2>
+      <div class="platform-grid">
+        <div class="platform-card">
+          <div class="plat-name">Instagram</div>
+          <div class="plat-stat">3.2M</div>
+          <div class="plat-label">Followers</div>
+          <div class="plat-detail">Posts 4-5x/week. Mix of product shots, cultural moments, and user-generated Cash Card designs. Heavy use of Reels. Green-on-black aesthetic maintained rigidly. Engagement rate: ~2.1%.</div>
+        </div>
+        <div class="platform-card">
+          <div class="plat-name">TikTok</div>
+          <div class="plat-stat">1.8M</div>
+          <div class="plat-label">Followers</div>
+          <div class="plat-detail">Posts 3-4x/week. Short humor clips, financial tips wrapped in memes, creator partnerships. Loosest brand voice across platforms — lets creators lead. Avg views: 500K-2M.</div>
+        </div>
+        <div class="platform-card">
+          <div class="plat-name">X (Twitter)</div>
+          <div class="plat-stat">1.1M</div>
+          <div class="plat-label">Followers</div>
+          <div class="plat-detail">Daily posts. Quick-hit copy, giveaway amplification, customer interaction. The most "human" voice — replies are casual and fast. Used for real-time cultural moments.</div>
+        </div>
+        <div class="platform-card">
+          <div class="plat-name">YouTube</div>
+          <div class="plat-stat">290K</div>
+          <div class="plat-label">Subscribers</div>
+          <div class="plat-detail">Campaign hero films and product explainers. Lower posting frequency (2-3x/month). High production value. pgLang-directed content lives here. Avg views: 100K-1M.</div>
+        </div>
+      </div>
+      <div class="image-grid" style="grid-template-columns: 1fr 1fr; grid-template-rows: 220px;">
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Instagram Grid Capture</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>TikTok Profile Capture</span></div>
+      </div>
+    </section>
+
+    <!-- §12 -->
+    <section class="section alt" id="content-campaign">
+      <div class="section-num">12 &mdash; Content & Campaign</div>
+      <h2 class="larken">Hero Campaigns</h2>
+      <div class="campaign-card">
+        <div>
+          <div class="camp-title larken">That's Money</div>
+          <div class="camp-meta"><span>pgLang / Anomaly</span><span>2022–present</span><span>TV, OOH, Social, Digital</span></div>
+          <div class="camp-desc">The defining campaign of Cash App's current era. Directed by Dave Free (pgLang), it positions everyday money moments as culturally significant. Black-and-green cinematography, Kendrick Lamar association, and a tagline that works as both statement and hashtag. Possibly the strongest brand campaign in fintech.</div>
+        </div>
+        <div class="image-placeholder" style="min-height: 140px;"><span class="ph-icon">&#9634;</span><span>Campaign Hero</span></div>
+      </div>
+      <div class="campaign-card">
+        <div>
+          <div class="camp-title larken">Cash In</div>
+          <div class="camp-meta"><span>Anomaly</span><span>2024</span><span>Digital, Social, Influencer</span></div>
+          <div class="camp-desc">Product-focused campaign highlighting Cash Card Boosts and direct deposit features. Lower production ceiling than "That's Money" but strong performance metrics. Influencer-led UGC strategy drove majority of impressions.</div>
+        </div>
+        <div class="image-placeholder" style="min-height: 140px;"><span class="ph-icon">&#9634;</span><span>Campaign Hero</span></div>
+      </div>
+      <div class="campaign-card">
+        <div>
+          <div class="camp-title larken">Heirloom</div>
+          <div class="camp-meta"><span>pgLang</span><span>2023</span><span>Short Film, Social</span></div>
+          <div class="camp-desc">A short film exploring generational wealth through the lens of Black family traditions. Artistic, emotional, zero product shots until the final frame. Won Cannes Lions. Represents the peak of Cash App's "brand as culture" strategy.</div>
+        </div>
+        <div class="image-placeholder" style="min-height: 140px;"><span class="ph-icon">&#9634;</span><span>Film Still</span></div>
+      </div>
+    </section>
+
+    <!-- §13 -->
+    <section class="section" id="audience">
+      <div class="section-num">13 &mdash; Audience & Community</div>
+      <h2 class="larken">Audience & Community</h2>
+      <div class="audience-grid">
+        <div class="audience-stat">
+          <div class="aud-value larken">71%</div>
+          <div class="aud-label">Under 35</div>
+        </div>
+        <div class="audience-stat">
+          <div class="aud-value larken">54%</div>
+          <div class="aud-label">Male</div>
+        </div>
+        <div class="audience-stat">
+          <div class="aud-value larken">82%</div>
+          <div class="aud-label">US-Based</div>
+        </div>
+      </div>
+      <h3>Sentiment</h3>
+      <p>Generally positive on social, with spikes during giveaway campaigns. Negative sentiment clusters around fraud/scam complaints (a significant brand risk) and customer support wait times. Reddit communities (r/CashApp) are more negative than other platforms — primarily support-seeking users.</p>
+      <h3>Community Management</h3>
+      <p>Active on Twitter/X with fast reply times. Instagram comments are selectively engaged — brand replies to positive content, ignores complaints. No official Discord or community forum. Cash Card design sharing is the closest thing to organic community building.</p>
+      <h3>UGC Patterns</h3>
+      <p>Custom Cash Card designs drive significant organic content. "Cash App me" has entered common language as a verb — perhaps the strongest brand achievement. Giveaway culture ($CashAppFriday) generates massive but low-quality engagement spikes.</p>
+      <div class="image-grid" style="grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 200px;">
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>UGC Sample 1</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>UGC Sample 2</span></div>
+        <div class="image-placeholder"><span class="ph-icon">&#9634;</span><span>Community Sentiment</span></div>
+      </div>
+    </section>
+
+    <!-- Appendix -->
+    <section class="section alt" id="inventory">
+      <div class="section-num">Appendix &mdash; Image Inventory</div>
+      <h2 class="larken">Collected Assets</h2>
+      <table class="compare-table">
+        <thead><tr><th>#</th><th>Source</th><th>File</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Anomaly case study</td><td>agency-hero-01.jpg</td><td>Hero image</td></tr>
+          <tr><td>2</td><td>Anomaly case study</td><td>agency-brand-system.jpg</td><td>Brand Evolution</td></tr>
+          <tr><td>3</td><td>pgLang / YouTube</td><td>thats-money-still-01.jpg</td><td>Campaign section</td></tr>
+          <tr><td>4</td><td>pgLang / YouTube</td><td>heirloom-still-01.jpg</td><td>Campaign section</td></tr>
+          <tr><td>5</td><td>Instagram API</td><td>ig-post-01.jpg</td><td>Social grid</td></tr>
+          <tr><td>6</td><td>Instagram API</td><td>ig-post-02.jpg</td><td>Social grid</td></tr>
+          <tr><td>7</td><td>Instagram API</td><td>ig-post-03.jpg</td><td>Social grid</td></tr>
+          <tr><td>8</td><td>Playwright</td><td>website-homepage.png</td><td>Positioning section</td></tr>
+          <tr><td>9</td><td>Playwright</td><td>instagram-grid.png</td><td>Social section</td></tr>
+          <tr><td>10</td><td>Playwright</td><td>tiktok-grid.png</td><td>Social section</td></tr>
+          <tr><td>11</td><td>App Store</td><td>appstore-screenshots.png</td><td>Layout & UX</td></tr>
+          <tr><td>12</td><td>Behance</td><td>behance-cashapp-01.jpg</td><td>Brand in Practice</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="report-footer">
+      <div class="footer-rule"></div>
+      <p>Generated with Visual Research by <a href="https://curiousendeavor.com" target="_blank">Curious Endeavor</a></p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progressBar').style.width = (window.scrollY / h * 100) + '%';
+  });
+
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('#sidebarNav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`#sidebarNav a[href="#${entry.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
