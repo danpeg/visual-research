@@ -111,6 +111,10 @@ body { font-family: var(--font-body); color: var(--black); background: var(--bg)
 .campaign-supporting .img-cell { aspect-ratio: 16/9; overflow: hidden; }
 .campaign-supporting .img-cell img { width: 100%; height: 100%; object-fit: cover; }
 
+/* ── Empty Slot Collapse — hide containers whose only image is the 1px placeholder ── */
+.campaign-hero:has(img[src^="data:image/gif"]) { height: 0; margin: 0; }
+.campaign-supporting .img-cell:has(img[src^="data:image/gif"]) { display: none; }
+
 /* ── Platform Grid ── */
 .platform-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 32px; }
 .platform-cell { background: var(--bg); padding: 20px; text-align: center; }
