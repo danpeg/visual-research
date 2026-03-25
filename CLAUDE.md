@@ -18,7 +18,7 @@ The skill is invoked conversationally ("research Cash App", "visual research on 
   - `source-discovery-guide.md` — Search strategies for finding brand assets
   - `image-extraction-techniques.md` — Instagram API, Prismic CMS, yt-dlp recipes
   - `ce-styleguide.md` — Curious Endeavor design rules (colors, typography, spacing, components)
-- **`examples/`** — Sample output: `sample-analysis.md` (markdown) and `sample-report.html` (HTML report for Cash App)
+
 
 ## Key Concepts
 
@@ -37,5 +37,4 @@ The skill is invoked conversationally ("research Cash App", "visual research on 
 - Changes to the pipeline logic go in `SKILL.md`
 - Changes to report appearance go in `templates/report.html` and `references/ce-styleguide.md`
 - Changes to research methodology go in the relevant `references/` file
-- The `examples/` files should reflect what the current skill actually produces — update them if the output format changes
 - **After any change, reinstall the skill** by running (from the repo root): `cp -r ./* ~/.claude/skills/visual-research/`
