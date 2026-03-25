@@ -38,4 +38,4 @@ The skill is invoked conversationally ("research Cash App", "visual research on 
 - Changes to report appearance go in `templates/report.html` and `references/ce-styleguide.md`
 - Changes to research methodology go in the relevant `references/` file
 - The `examples/` files should reflect what the current skill actually produces — update them if the output format changes
-- **After any change, reinstall the skill** by running: `cp -r /Users/danpeguine/Projects/curious-endeavor/visual-research/* ~/.claude/skills/visual-research/`
+- **After any change, reinstall the skill** by running (from the repo root): `cp -r ./* ~/.claude/skills/visual-research/`
