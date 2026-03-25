@@ -194,9 +194,14 @@ Populate the template with research findings:
    `<tr><td data-rating="Exceptional">Cultural Relevance</td><td class="strength">Exceptional</td><td>Notes here</td></tr>`
    The `data-rating` value must match the rating text. This powers the mobile layout where the Rating column is hidden and its value is appended inline.
 8. Embed images into `data-slot` positions (see procedure below)
-9. Save as `[brand]-visual-research.html`
-10. Run visual verification (Phase 5c below)
-11. Open in the user's browser
+9. Fill OG meta tags for social sharing:
+   - `{{OG_IMAGE_URL}}` — absolute URL to the hero image (or a representative brand image). Must be an absolute `https://` URL, not base64. Use the best available brand image URL discovered during research (e.g. a hero shot from the brand's site or social media). WhatsApp requires an absolute URL for `og:image`.
+   - `{{OG_URL}}` — the published URL of the report (fill after publishing via cloudflared, or leave as the expected tunnel URL)
+   - `{{TLDR_VERDICT}}` is reused for `og:description` — already filled in step 1
+   - `{{BRAND_NAME}}` is reused for `og:title` — already filled
+10. Save as `[brand]-visual-research.html`
+11. Run visual verification (Phase 5c below)
+12. Open in the user's browser
 
 **Image embedding procedure:**
 
@@ -335,5 +340,6 @@ Before marking research complete:
 - [ ] Assessment table rows include `data-rating` attribute on Dimension cells
 - [ ] HTML report passes visual verification (Phase 5c) — desktop and mobile screenshots reviewed
 - [ ] No cropping, missing images, placeholder text, or layout breaks detected
+- [ ] OG meta tags populated — `og:image` uses an absolute `https://` URL (not base64), `og:url` set after publishing
 - [ ] CE styleguide compliance confirmed via vision review (white bg, correct fonts, red accent sparingly)
 - [ ] Mobile layout verified — grids collapse correctly, text readable, no overflow
