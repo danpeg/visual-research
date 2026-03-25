@@ -116,6 +116,65 @@ Pull actual images from APIs and CDNs.
 Read `references/image-extraction-techniques.md` for detailed recipes.
 
 Core extractions:
+
+#### Hero Image Sourcing (Priority — Slot 0)
+
+The hero image is the most important visual in the report. It must be:
+- **High resolution** (minimum 1200px wide, ideally 1600px+)
+- **Brand-representative** — shows the brand's actual visual identity, not just something with the logo on it
+- **Professionally produced** — press photos, campaign key art, homepage heroes. Not phone photos, not user-generated content
+- **Compositionally suitable** — works at 16:9 aspect ratio with a gradient overlay on the left 40% (text will sit there)
+
+**Search in this priority order, collecting candidates into `hero-candidates/`:**
+
+1. **Homepage hero image**
+   - Use Playwright to screenshot the above-the-fold hero section
+   - Also extract the actual image URL from the page source (look for hero/banner container `<img>` tags, CSS `background-image`, `<video poster>`)
+   - Apply resolution maximizer (see below) to get the full-size asset
+   - Check if the CMS (DatoCMS, Contentful, Prismic, Sanity) exposes the raw asset URL without resize params
+
+2. **Press/media kit hero imagery**
+   - Check `/press`, `/newsroom`, `/media`, `/brand` pages for downloadable high-res imagery
+   - Look for "brand assets" or "media kit" download links
+   - Press photos from product launches or conferences are often the highest quality
+
+3. **Agency case study hero**
+   - Behance/Dribbble case studies typically lead with a hero image that the agency art-directed
+   - These are purpose-built to showcase the brand's visual identity at its best
+   - Apply resolution maximizer to Prismic/Sanity/CMS URLs
+
+4. **Campaign key art**
+   - Search: `web_search "[Brand] campaign key art [Year]"`
+   - Search: `web_search "[Brand] brand campaign hero image"`
+   - Trade press (It's Nice That, Creative Review, The Drum) often publishes agency-supplied high-res campaign imagery
+   - Conference/event photography from the brand's own events
+
+5. **Product marketing screenshots**
+   - Product pages often have polished, art-directed hero shots
+   - App Store/Play Store feature graphics (these are required to be 1024x500+)
+   - Marketing landing pages for specific features/products
+
+6. **Social media — last resort only**
+   - Only if nothing above yields a usable image
+   - Prefer official brand posts over user photos
+   - Instagram carousel first slides are usually highest production value
+   - Avoid: phone photos, UGC, nighttime shots, grainy/compressed images
+
+**Selection criteria — choose the best candidate:**
+
+| Criterion | Weight | What to check |
+|-----------|--------|---------------|
+| Resolution | High | Must be ≥1200px wide. Prefer ≥1600px |
+| Brand representation | High | Does it show the brand's visual identity system (colors, style, aesthetic)? |
+| Production quality | High | Professional photography/design, not phone shots |
+| Composition | Medium | Works at 16:9 with left-side overlay? Subject on right half preferred |
+| Recency | Medium | Current branding, not a 5-year-old campaign |
+| Uniqueness | Low | Not a generic stock photo or widely-circulated press image |
+
+If Gemini or Claude vision is available, load the top 3 candidates and evaluate against these criteria. Pick the best one. Save as `hero-candidates/hero-selected.jpg` and note the source.
+
+**If no candidate meets minimum quality:** Use the best available option but flag it in the research doc: "Hero image is below ideal quality — [reason]. Recommend replacing if a better source is found."
+
 - **Official logo** — Priority extraction. Try these sources in order until you get a clean, full logo on a solid or transparent background:
   1. **Brand press/media kit** — `/press`, `/newsroom`, `/media`, `/brand`, `/brand-assets`. Many brands offer downloadable logo files (PNG/SVG)
   2. **Brandfetch / brand databases** — `web_search "[Brand] logo PNG transparent"`, `web_search "[Brand] logo brandfetch"`
@@ -133,6 +192,38 @@ Core extractions:
 - **Brand press kit** — downloadable assets from press pages
 
 Download to organized directories: `instagram/`, `youtube/`, `agency/`, `press/`.
+
+#### Image Resolution Maximizer
+
+Apply this procedure to **every** image URL before downloading. The goal is to always get the highest resolution version available.
+
+1. **Strip CDN resize parameters.** Many CDNs append width/height params that downsample:
+   - Contentful/Prismic: remove `?w=800` or `&w=800`, or set `?w=2000`
+   - Cloudinary: change `/w_400/` to `/w_2000/` or remove transform path segments
+   - Imgix: remove `?w=`, `?h=`, `?fit=` params
+   - Shopify: change `_200x200` suffix to `_2000x2000` or remove it
+   - WordPress: remove `-800x600` before the extension
+   - DatoCMS: remove query params for original, or set `?w=2000`
+   - Sanity: remove `?w=` param for full resolution
+   - Vercel/Next.js: extract the `url` param from `/_next/image?url=...&w=640&q=75`, fetch directly
+   - Webflow: remove `-w-800` or replace with larger value
+   - Squarespace: change `format=500w` to `format=2500w` or remove param
+   - General: try removing all query parameters and check if the raw URL returns a larger image
+
+   See `references/image-extraction-techniques.md` for the full CDN pattern reference.
+
+2. **Check srcset for larger versions.** When extracting from HTML:
+   - Parse `srcset` attribute for the highest `w` descriptor
+   - Check `data-src`, `data-full`, `data-original` attributes
+   - Look for `<picture>` elements with larger `<source>` URLs
+
+3. **Verify resolution after download.** For critical images (hero, logo, campaign heroes):
+   ```bash
+   sips -g pixelWidth -g pixelHeight [image]  # macOS
+   ```
+   If width < 800px, flag as low-res and attempt alternative sources.
+
+4. **Prefer PNG/WebP over JPEG** when both are available at the same size (lossless > lossy for brand assets).
 
 ### Phase 4 — Analyze
 
@@ -195,8 +286,12 @@ Populate the template with research findings:
    The `data-rating` value must match the rating text. This powers the mobile layout where the Rating column is hidden and its value is appended inline.
 8. Embed images into `data-slot` positions (see procedure below)
 9. Save as `[brand]-visual-research.html`
-10. Run visual verification (Phase 5c below)
-11. Open in the user's browser
+
+**STOP — DO NOT open in browser, DO NOT publish, DO NOT report completion.**
+The report is NOT finished until Phase 5c runs and `verify/PASSED` exists.
+
+10. Run Phase 5c — Visual Verification (below)
+11. Only after `verify/PASSED` exists: open in the user's browser
 
 **Image embedding procedure:**
 
@@ -285,11 +380,17 @@ Apply fixes directly to the saved HTML file.
 
 **Step 4 — Re-verify (max 3 passes):**
 
-After fixing, re-screenshot only the sections that had issues and re-review. If all screenshots pass, proceed to browser open. If 3 passes exhausted, note remaining issues and proceed — don't block indefinitely.
+After fixing, re-screenshot only the sections that had issues and re-review. If all screenshots pass, write the gate artifact and proceed. If 3 passes exhausted, note remaining issues in the gate artifact and proceed — don't block indefinitely.
+
+```bash
+echo "PASSED — $(date -u +%Y-%m-%dT%H:%M:%SZ) — [X] defects found, [Y] fixed, [Z] remaining" > verify/PASSED
+```
+
+The `verify/PASSED` file is the gate artifact. Phase 5b's publish step checks for it. Do not proceed to browser open or report completion without it.
 
 **Step 5 — Clean up:**
 
-Delete the `verify/` directory after verification passes (screenshots are temporary).
+Delete screenshot PNGs from `verify/` after verification passes. Keep `verify/PASSED` — it is the gate artifact for the publish step.
 
 ## OpenClaw Deployment
 
@@ -310,13 +411,23 @@ Split the work across two sequential sub-agents:
 
 The gather agent should save its output to a known location so the package agent can pick it up. Use the workspace directory for handoff.
 
+**Sub-agent verification rule:** When using Option B, the Package agent must run Phase 5c itself. If a sub-agent reports "complete," the orchestrating agent MUST still verify `verify/PASSED` exists before accepting the result. Never trust a sub-agent's completion signal without checking the gate artifact.
+
 **Option C — Parallel gather + sequential package**
 
 For maximum speed, split Phase 1 (Discover) and Phases 2-3 (Capture + Extract) across parallel agents, then run Phase 4-5 sequentially once images are collected. Only worth the complexity for time-sensitive briefs.
 
 ## Quality Checklist
 
-Before marking research complete:
+**Gate (must pass before reporting completion or opening browser):**
+
+- [ ] `verify/PASSED` file exists — Phase 5c ran to completion
+- [ ] HTML report passes visual verification — desktop and mobile screenshots reviewed
+- [ ] No cropping, missing images, placeholder text, or layout breaks detected
+- [ ] CE styleguide compliance confirmed via vision review (white bg, correct fonts, red accent sparingly)
+- [ ] Mobile layout verified — grids collapse correctly, text readable, no overflow
+
+**Content (verify during pipeline):**
 
 - [ ] Agency identified and case study images extracted
 - [ ] Instagram posts downloaded — at least 6 images
@@ -333,7 +444,8 @@ Before marking research complete:
 - [ ] Brand in Practice grid has at least 4 of 6 images populated
 - [ ] No image file assigned to more than one data-slot (check Image Assignment Log)
 - [ ] Assessment table rows include `data-rating` attribute on Dimension cells
-- [ ] HTML report passes visual verification (Phase 5c) — desktop and mobile screenshots reviewed
-- [ ] No cropping, missing images, placeholder text, or layout breaks detected
-- [ ] CE styleguide compliance confirmed via vision review (white bg, correct fonts, red accent sparingly)
-- [ ] Mobile layout verified — grids collapse correctly, text readable, no overflow
+- [ ] Hero image (slot 0) sourced from dedicated hero search — not just picked from Instagram batch
+- [ ] Hero image resolution ≥1200px wide
+- [ ] Hero image represents the brand's visual identity (not just "has the logo on it")
+- [ ] Hero image is professionally produced (not a phone photo or UGC)
+- [ ] All downloaded images passed through resolution maximizer (no CDN thumbnails)

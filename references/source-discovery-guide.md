@@ -70,6 +70,19 @@ Standard handle locations:
 - X/Twitter: `x.com/[handle]`
 - LinkedIn: `linkedin.com/company/[slug]`
 
+## Hero Image Sources
+
+Priority-ordered sources specifically for hero-quality imagery (slot 0 in the report). The hero sets the tone for the entire report — invest time here.
+
+1. **Brand homepage** — Extract the actual hero image asset from page source (not just a screenshot). See `image-extraction-techniques.md` for the homepage hero extraction recipe.
+2. **Press/media pages** — `/press`, `/newsroom`, `/brand-assets`. Press kits often have the highest-resolution brand imagery available.
+3. **Agency case studies** — Behance, Dribbble, agency portfolio sites. These images are art-directed to showcase the brand at its best.
+4. **Trade press** — It's Nice That, Creative Review, The Drum, Campaign. Publications receive agency-supplied high-res imagery for articles.
+5. **Conference/event photography** — Brand's own events, keynotes, product launches. Professional event photography is typically high-res.
+6. **Product marketing** — Feature pages, app store assets. App Store/Play Store feature graphics are required to be 1024x500+.
+
+**Social media is a last resort** — only use if none of the above yields a usable image. Instagram posts are compressed and often from phones.
+
 ## Financial Data Sources
 
 For Quick Facts section:

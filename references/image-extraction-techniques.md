@@ -96,6 +96,48 @@ TikTok's API is locked down. Available approaches:
 2. **yt-dlp** for individual video thumbnails if URLs are known
 3. **Apify TikTok scraper** if an API key is available (~$1.70/1k results)
 
+## CDN Resolution Patterns
+
+Common CDN URL patterns and how to extract maximum resolution. Apply these before downloading any image.
+
+| CDN/CMS | URL pattern | How to maximize |
+|---------|-------------|-----------------|
+| Contentful | `images.ctfassets.net/...?w=800&h=600` | Remove `?w=` and `?h=` params, or set `w=2000` |
+| Prismic | `images.prismic.io/...?w=800` | Append `&w=2000` or remove width param |
+| DatoCMS | `www.datocms-assets.com/...?w=800` | Remove query params for original, or `?w=2000` |
+| Sanity | `cdn.sanity.io/.../image-...?w=800` | Remove `?w=` param for full resolution |
+| Cloudinary | `res.cloudinary.com/.../w_400,h_300/...` | Remove or increase transform values: `w_2000` |
+| Imgix | `...imgix.net/...?w=800&fit=crop` | Remove `w=`, `h=`, `fit=` params |
+| Shopify | `cdn.shopify.com/...file_200x200.jpg` | Remove dimensions: `file.jpg` or use `_2000x2000` |
+| WordPress | `wp-content/.../image-800x600.jpg` | Remove `-800x600` before extension |
+| Vercel/Next.js | `/_next/image?url=...&w=640&q=75` | Extract the `url` param, fetch directly |
+| Webflow | `uploads-ssl.webflow.com/.../-w-800.jpg` | Remove `-w-800` or replace with larger value |
+| Squarespace | `images.squarespace-cdn.com/...?format=500w` | Change `format=2500w` or remove param |
+
+**General heuristic:** If an image URL contains numbers that look like dimensions (400, 600, 800, 1024) in the path or query string, try removing them or increasing to 2000. Worst case, you get a 404 and fall back to the original URL.
+
+## Homepage Hero Extraction
+
+For extracting the main hero image from any brand's homepage:
+
+1. **Playwright screenshot** of above-the-fold (captures what the user sees)
+2. **HTML source inspection** for hero image URLs:
+   ```bash
+   curl -sL "https://brand.com" | python3 -c "
+   import sys, re
+   html = sys.stdin.read()
+   # Look for hero/banner containers
+   hero_patterns = [
+       r'class=[\"\\'][^\"\\']*(hero|banner|masthead|jumbotron|splash)[^\"\\'].*?(?:src|background-image)[=:]\\s*[\"\\']?([^\"\\')\\s]+)',
+       r'<video[^>]+poster=[\"\\']([^\"\\' ]+)[\"\\']',
+   ]
+   for p in hero_patterns:
+       for match in re.findall(p, html, re.IGNORECASE | re.DOTALL):
+           print(match[-1] if isinstance(match, tuple) else match)
+   "
+   ```
+3. **CMS API check** — if the site uses a headless CMS, the API often exposes the original upload without resizing. Apply CDN Resolution Patterns (above) to strip resize params.
+
 ## Downloading Images
 
 For any direct image URL:
